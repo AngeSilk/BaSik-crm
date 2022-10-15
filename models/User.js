@@ -12,11 +12,15 @@ const userSchema = new mongoose.Schema({
         required:[true, 'El apellido es requerido'],
         trim:true
     },
-    DNI:{
+    dni:{
         type:String,
         required:[true, 'El DNI es requerido'],
         trim:true,
         unique:true
+    },
+    cuit: {
+        type: String,
+        required: true,
     },
     email:{
         type:String,
@@ -49,6 +53,11 @@ const userSchema = new mongoose.Schema({
 },{
     timestamps:true
 })
+
+userSchema.methods.toJSON = function(){
+    const {password, status, __v, ...user} = this.toObject()
+    return user
+}
 
 const User = mongoose.model('User', userSchema)
 
