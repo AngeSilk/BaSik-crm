@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
     name:{
         type:String,
         required:[true, 'El nombre del producto es requerido'],
@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
         type:String
     }],
     price:{
-        type:number,
+        type:Number,
         required:[true, 'El precio es requerido'],
         trim:true,
     },
@@ -23,19 +23,23 @@ const userSchema = new mongoose.Schema({
         required:[true, 'El codigo es requerido'],
         trim:true
     },
-    stock: {
-        type: Number,
-        default: 0,
+    stock:{
+        type:Number,
+        default:0,
     },
     status:{
         type:Boolean,
         default:true
     },
+    userAdded:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"userAdded",
+     }],
 },
 {
     timestamps:true
 })
 
-const Product = mongoose.model('Product', userSchema)
+const Product = mongoose.model('Product', productSchema)
 
 export default Product

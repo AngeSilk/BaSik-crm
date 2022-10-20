@@ -4,12 +4,10 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     name:{
         type:String,
-        required:[true, 'El nombre es requerido'],
-        trim:true
+        trim: false
     },
     lastname:{
         type:String,
-        required:[true, 'El apellido es requerido'],
         trim:true
     },
     dni:{
@@ -17,10 +15,6 @@ const userSchema = new mongoose.Schema({
         required:[true, 'El DNI es requerido'],
         trim:true,
         unique:true
-    },
-    cuit: {
-        type: String,
-        required: true,
     },
     email:{
         type:String,
@@ -30,7 +24,6 @@ const userSchema = new mongoose.Schema({
     },
     password:{
         type:String,
-        required:[true, 'La contraseña es requerida'],
         trim:true
     },
     google: {
@@ -45,17 +38,28 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:true
     },
-    // address:[{
-    //    type:mongoose.Schema.Types.ObjectId,
-    //    ref:"Address",
-    //    required:true
-    // }],
+    address: [{
+       type:mongoose.Schema.Types.ObjectId,
+       ref:"Address",
+    }],
+    role: { // TO DO: faltan declarar roles,
+        type: String,
+        enum: {
+            values: ['SUPER_ADMIN','ADMIN', 'STAFF', 'CLIENT'],
+            message: '{VALUE} no es rol válido',
+        },
+        default: 'client'
+    },
+    regToken: {
+        type: String,
+        required: true,
+    }
 },{
     timestamps:true
 })
 
 userSchema.methods.toJSON = function(){
-    const {password, status, __v, ...user} = this.toObject()
+    const { password, status, __v, ...user} = this.toObject()
     return user
 }
 
